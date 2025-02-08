@@ -43,6 +43,14 @@ function ojtest() {
 EOF
 
 cat << EOF >> ~/.bashrc
+function ojd() {
+    rm -rf test
+    oj d \$1
+}
+
+EOF
+
+cat << EOF >> ~/.bashrc
 function atc() {
     DIR=${PWD}/src/\$1
     mkdir \${DIR}
