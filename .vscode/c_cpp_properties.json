@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${default}",
+                "${workspaceFolder}/library/**",
+                "${workspaceFolder}/ac-library/"
+            ],
+            "compilerPath": "g++",
+            "intelliSenseMode": "macos-gcc-x64",
+            "cppStandard": "c++20"
+        }
+    ],
+    "version": 4
+}
