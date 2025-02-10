@@ -13,7 +13,7 @@ fi
 ACL=${PWD}/ac-library
 popd
 
-if !(type oj > /dev/null 2>&1); then
+if !(type oj-bundle > /dev/null 2>&1); then
     pip3 install online-judge-verify-helper
 fi
 
@@ -26,8 +26,8 @@ function ojcopy() {
 EOF
 cat << EOF >> ~/.bashrc
 function ojrun() {
-    oj-bundle -I "${LIB}" \$1 | sed 's*${LIB}*lib*' > __tmp.cpp
-    g++ -std=c++20 -I "${ACL}" __tmp.cpp -o a
+    oj-bundle -I "${LIB}" \$1 | sed 's*${LIB}*lib*' > __tmp.cpp &&\
+    g++ -std=c++20 -I "${ACL}" __tmp.cpp -o a &&\
     ./a
 }
 
@@ -35,8 +35,8 @@ EOF
 
 cat << EOF >> ~/.bashrc
 function ojtest() {
-    oj-bundle -I "${LIB}" \$1 | sed 's*${LIB}*lib*' > __tmp.cpp
-    g++ -std=c++20 -I "${ACL}" __tmp.cpp -o a
+    oj-bundle -I "${LIB}" \$1 | sed 's*${LIB}*lib*' > __tmp.cpp &&\
+    g++ -std=c++20 -I "${ACL}" __tmp.cpp -o a &&\
     oj t -c "./a" && cat __tmp.cpp | pbcopy
 }
 
@@ -44,7 +44,7 @@ EOF
 
 cat << EOF >> ~/.bashrc
 function ojd() {
-    rm -rf test
+    rm -rf test &&\
     oj d \$1
 }
 
@@ -55,7 +55,7 @@ function atc() {
     DIR=${PWD}/src/\$1
     mkdir \${DIR}
     cd \${DIR}
-    
+
     for i in {a..g}
     do
         cp ${PWD}/template/a.cpp \$i.cpp
@@ -65,4 +65,3 @@ function atc() {
 EOF
 echo 'source ~/.bashrc' | pbcopy
 echo 'cmd + v, enter'
-
