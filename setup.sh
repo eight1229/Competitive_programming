@@ -35,9 +35,40 @@ EOF
 
 cat << EOF >> ~/.bashrc
 function ojtest() {
-    oj-bundle -I "${LIB}" \$1 | sed 's*${LIB}*lib*' > __tmp.cpp &&\
-    g++ -std=c++20 -I "${ACL}" __tmp.cpp -o a &&\
-    oj t -c "./a" && cat __tmp.cpp | pbcopy
+    PROBLEM_URL=""
+    SRC_PATH=""
+    if [ \$# -eq 2 ];then
+        PROBLEM_URL=\$1
+        SRC_PATH=\$2
+    else
+        CURRENT=\$(pwd)
+        DIR_NAME=\`echo "\$CURRENT" | sed -e 's/.*\/\([^\/]*\)$/\1/'\`
+        SRC_PATH=\$1
+        PROBLEM_URL="https://atcoder.jp/contests/\${DIR_NAME}/tasks/\${DIR_NAME}_\${SRC_PATH:0:1}"
+    fi
+
+    rm -rf test && oj d \$PROBLEM_URL &&\
+    oj-bundle -I "${LIB}" \$SRC_PATH | sed 's*${LIB}*lib*' > __tmp.cpp &&    g++ -std=c++20 -I "${ACL}" __tmp.cpp -o a &&    oj t -c "./a" && cat __tmp.cpp | pbcopy
+}
+
+EOF
+
+cat << EOF >> ~/.bashrc
+function ojsub() {
+    PROBLEM_URL=""
+    SRC_PATH=""
+    if [ \$# -eq 2 ];then
+        PROBLEM_URL=\$1
+        SRC_PATH=\$2
+    else
+        CURRENT=\$(pwd)
+        DIR_NAME=\`echo "\$CURRENT" | sed -e 's/.*\/\([^\/]*\)$/\1/'\`
+        SRC_PATH=\$1
+        PROBLEM_URL="https://atcoder.jp/contests/\${DIR_NAME}/tasks/\${DIR_NAME}_\${SRC_PATH:0:1}"
+    fi
+
+    rm -rf test && oj d \$PROBLEM_URL &&\
+    oj-bundle -I "${LIB}" \$SRC_PATH | sed 's*${LIB}*lib*' > __tmp.cpp &&    g++ -std=c++20 -I "${ACL}" __tmp.cpp -o a &&    oj t -c "./a" && oj s \${PROBLEM_URL} __tmp.cpp
 }
 
 EOF
