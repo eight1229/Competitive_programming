@@ -1,4 +1,5 @@
 set -e
+RC_PATH=~/.$(echo $SHELL | sed 's#/bin/##')rc
 PWD=$(cd $(dirname $0);pwd)
 cd ${PWD}
 LIB=${PWD}/library
@@ -17,14 +18,14 @@ if !(type oj-bundle > /dev/null 2>&1); then
     pip3 install online-judge-verify-helper
 fi
 
-cat << EOF >> ~/.bashrc
+cat << EOF >> $RC_PATH
 
 function ojcopy() {
     oj-bundle -I "${LIB}" \$1 | sed 's*${LIB}*lib*' | pbcopy
 }
 
 EOF
-cat << EOF >> ~/.bashrc
+cat << EOF >> $RC_PATH
 function ojrun() {
     oj-bundle -I "${LIB}" \$1 | sed 's*${LIB}*lib*' > __tmp.cpp &&\
     g++ -std=c++20 -I "${ACL}" __tmp.cpp -o a &&\
@@ -33,7 +34,7 @@ function ojrun() {
 
 EOF
 
-cat << EOF >> ~/.bashrc
+cat << EOF >> $RC_PATH
 function ojtest() {
     PROBLEM_URL=""
     SRC_PATH=""
@@ -53,7 +54,7 @@ function ojtest() {
 
 EOF
 
-cat << EOF >> ~/.bashrc
+cat << EOF >> $RC_PATH
 function ojsub() {
     PROBLEM_URL=""
     SRC_PATH=""
@@ -73,7 +74,7 @@ function ojsub() {
 
 EOF
 
-cat << EOF >> ~/.bashrc
+cat << EOF >> $RC_PATH
 function ojd() {
     rm -rf test &&\
     oj d \$1
@@ -81,7 +82,7 @@ function ojd() {
 
 EOF
 
-cat << EOF >> ~/.bashrc
+cat << EOF >> $RC_PATH
 function atc() {
     DIR=${PWD}/src/\$1
     mkdir \${DIR}
@@ -94,5 +95,5 @@ function atc() {
 }
 
 EOF
-echo 'source ~/.bashrc' | pbcopy
+echo "source $RC_PATH" | pbcopy
 echo 'cmd + v, enter'
